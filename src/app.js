@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json({ limit: "20mb"}));
 
 app.get("/", (req, res, next) => {
-    res.send("<h2>Library Managment System API 🥴</h2>")
+    res.send("<h2>📚 Library Managment System API</h2>")
 })
 
 app.listen(PORT, () => {
