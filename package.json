@@ -1,0 +1,19 @@
+{
+  "name": "library-managment-system",
+  "version": "1.0.0",
+  "description": "Library management system API",
+  "main": "app.js",
+  "repository": "https://github.com/lahiruudayakumara/library-management-system.git",
+  "author": "LAHIRU UDAYAKUMARA",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "nodemon --exec babel-node src/app.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.9",
+    "@babel/node": "^7.22.6",
+    "@babel/preset-env": "^7.22.9",
+    "nodemon": "^3.0.1"
+  }
+}
