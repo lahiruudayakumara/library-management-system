@@ -69,7 +69,7 @@ export const getRecommendations = async (req: Request, res: Response, next: Next
   try {
     const recommendations = await Book.aggregate([
       { $match: { availableCopies: { $gt: 0 } } },
-      { $sort: { borrowCount: -1 } }, // assuming borrowCount tracks book popularity
+      { $sort: { borrowCount: -1 } },
       { $limit: 5 },
     ]);
     res.status(200).json({ success: true, data: recommendations });
@@ -82,7 +82,7 @@ export const getRecommendations = async (req: Request, res: Response, next: Next
 // Get book count
 export const getBookCount = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const bookCount = await Book.countDocuments(); // Count the number of books in the collection
+    const bookCount = await Book.countDocuments();
     res.status(200).json({ success: true, data: bookCount });
   } catch (error: any) {
     res.status(400).json({ success: false, error: error.message });
