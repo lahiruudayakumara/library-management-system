@@ -21,7 +21,7 @@ const PaymentSchema = new mongoose.Schema(
       default: "LKR",
     },
     paymentMethod: {
-      type: String, // e.g., "Stripe", "PayPal"
+      type: String,
     },
     paymentStatus: {
       type: String,

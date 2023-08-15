@@ -18,7 +18,6 @@ interface IBook extends Document {
   returnBook: () => Promise<this>;
 }
 
-// Schema definition
 const BookSchema: Schema<IBook> = new mongoose.Schema(
   {
     title: {
@@ -35,11 +34,6 @@ const BookSchema: Schema<IBook> = new mongoose.Schema(
       type: String,
       unique: true,
       required: true,
-      // Uncomment and adjust the regex if ISBN validation is needed
-      // validate: {
-      //   validator: (v: string) => /^[\d-]+$/.test(v),
-      //   message: 'ISBN should contain only numbers and hyphens.',
-      // },
     },
     genres: {
       type: [String],
@@ -102,10 +96,8 @@ BookSchema.methods.returnBook = async function (): Promise<IBook> {
   return this.save();
 };
 
-// Indexes for optimized queries
 BookSchema.index({ title: 'text', author: 'text' });
 
-BookSchema.index({ genres: 1 });  // Non-text index for array field
+BookSchema.index({ genres: 1 });
 
-// Export the model with the interface
 export default mongoose.model<IBook>('Book', BookSchema);

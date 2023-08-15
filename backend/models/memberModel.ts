@@ -52,7 +52,7 @@ const MemberSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // Automatically add createdAt and updatedAt fields
+    timestamps: true,
   }
 );
 
@@ -79,5 +79,4 @@ MemberSchema.pre("save", function (next) {
 // Indexing the email field for faster lookup and unique constraint
 MemberSchema.index({ email: 1 });
 
-// Create and export the Member model
 export default mongoose.model("Member", MemberSchema);
