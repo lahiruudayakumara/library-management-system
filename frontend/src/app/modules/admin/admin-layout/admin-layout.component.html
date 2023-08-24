@@ -1,0 +1,12 @@
+<div class="dashboard-layout">
+  <!-- Navbar -->
+  <app-navbar></app-navbar>
+
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content -->
+  <main class="main-content" [class.active]="isActive">
+    <router-outlet></router-outlet>
+  </main>
+</div>
