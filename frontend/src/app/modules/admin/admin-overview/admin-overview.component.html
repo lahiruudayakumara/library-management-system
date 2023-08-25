@@ -1,0 +1,16 @@
+<div class="admin-overview ">
+  <app-welcome-date-time-component [username]="'John Doe'"></app-welcome-date-time-component>
+  <div class="view-boxs">
+    <app-view-box [count]="userCount.all" [active]="userCount.active" [inactive]="userCount.deactive" [icon]="Users" [description]="'Members'"></app-view-box>
+    <app-view-box [count]="150" [icon]="UserPen" [description]="'Assistant'"></app-view-box>
+    <app-view-box [count]="150" [icon]="BookText" [description]="'Books'"></app-view-box>
+    <app-view-box [count]="150" [icon]="BookMarked" [description]="'Reserved Books'"></app-view-box>
+  </div>
+  <div class="list-area">
+    <app-user-list-view />
+    <app-member-list-view />
+  </div>
+  <div class="top-choice">
+    <app-top-choice-list-view></app-top-choice-list-view>
+  </div>
+</div>
