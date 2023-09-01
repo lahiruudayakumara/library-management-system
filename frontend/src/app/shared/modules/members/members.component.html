@@ -1,0 +1,41 @@
+<div class="staff-members">
+  <div class="header">
+    <h2>Member List</h2>
+    <div class="btn-area">
+      <button class="add-user-btn" (click)="addMember()">Add New Member <lucide-angular [img]="SquarePlus" size="20" class="my-icon" /></button>
+      <label class="Search-field">
+        <lucide-angular [img]="Search" size="20" class="my-icon" />
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="filterMember()" placeholder="Search" />
+      </label>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Membership Type</th>
+        <th>Created At</th>
+        <th>Membership Expiry</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let member of filteredMembers">
+        <td>{{ member.name }}</td>
+        <td>{{ member.email }}</td>
+        <td>{{ member.membershipType }}</td>
+        <td>{{ formatDate(member.createdAt) }}</td>
+        <td>{{ formatDate(member.membershipExpiry) }}</td>
+        <td>
+          <button (click)="editMember(member)">
+            <lucide-angular [img]="FilePenLine" size="20" class="my-icon"></lucide-angular>
+          </button>
+          <button (click)="deleteMember(member._id)">
+            <lucide-angular [img]="Trash2" size="20" class="my-icon"></lucide-angular>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
