@@ -1,0 +1,88 @@
+<div class="staff-members">
+  <div class="header">
+    <h2>Books List</h2>
+    <div class="btn-area">
+      <button class="add-book-btn" (click)="addBook()">
+        Add New Book
+        <lucide-angular [img]="SquarePlus" size="20" class="my-icon" />
+      </button>
+      <button class="add-book-btn" (click)="scanEnable()">
+        {{ scanEnabled ? "Close Scanner" : "Open Scanner"
+        }}<lucide-angular [img]="ScanBarcode" size="20" class="my-icon" />
+      </button>
+      <label class="Search-field">
+        <lucide-angular [img]="Search" size="20" class="my-icon" />
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="filterItems()"
+          placeholder="Search"
+        />
+      </label>
+    </div>
+  </div>
+  <app-add-book-modal
+    [isOpen]="isModalOpen"
+    title="Logout Confirmation"
+    message="Are you sure you want to log out?"
+    (onConfirm)="addBook()"
+  >
+  </app-add-book-modal>
+  <div class="main-area">
+    <table>
+      <thead>
+        <tr>
+          <th>ISBN</th>
+          <th>Book Name</th>
+          <th>Author Name</th>
+          <th>Published Date</th>
+          <th>Total Copies</th>
+          <th>Available Copies</th>
+          <th>Updated At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of filteredBooks">
+          <td>{{ book.isbn }}</td>
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ formatDate(book.publishedDate) }}</td>
+          <td>{{ book.totalCopies }}</td>
+          <td>{{ book.availableCopies }}</td>
+          <td>{{ formatDate(book.updatedAt) }}</td>
+          <td>
+            <button (click)="editBook(book)">
+              <lucide-angular
+                [img]="FilePenLine"
+                size="20"
+                class="my-icon"
+              ></lucide-angular>
+            </button>
+            <button (click)="deleteBook(book._id)">
+              <lucide-angular
+                [img]="Trash2"
+                size="20"
+                class="my-icon"
+              ></lucide-angular>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="scanEnabled" class="barcode-scanner">
+      <app-barcode-scanner></app-barcode-scanner>
+    </div>
+    <app-edit-book-modal
+      [isOpen]="isEditModalOpen"
+      [editedBook]="selectedBook"
+      (onCancel)="onCancelEdit()"
+      (onSave)="onSaveEdit()"
+    ></app-edit-book-modal>
+    <app-alert-modal
+      [isOpen]="isBookDeleteAlertOpen"
+      type="success"
+      title="Book Registered"
+      message="Book has been registered successfully"
+    ></app-alert-modal>
+  </div>
+</div>
