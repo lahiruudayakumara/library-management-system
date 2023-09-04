@@ -1,0 +1,37 @@
+<div class="user-list">
+  <div class="header">
+    <h2>Staff List</h2>
+    <button class="add-user-btn" (click)="addUser()">Add New User</button>
+  </div>
+
+  <table *ngIf="staffUsers.length > 0">
+    <thead>
+      <tr>
+        <th>User Name</th>
+        <th>Name</th>
+        <th class="text-center">User Role</th>
+        <th class="text-center">Current Status</th>
+        <th class="text-center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let staffUser of staffUsers">
+        <td>{{ staffUser.username}}</td>
+        <td>{{ staffUser.name }}</td>
+        <td class="text-center">{{ staffUser.role }}</td>
+        <td class="text-center">{{ staffUser.isActive }}</td>
+        <td class="text-center">
+          <button (click)="editUser(staffUser)">
+            <lucide-angular [img]="FilePenLine" size="20" class="my-icon"></lucide-angular>
+          </button>
+          <button (click)="deleteUser(staffUser._id)">
+            <lucide-angular [img]="Trash2" size="20" class="my-icon"></lucide-angular>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="staffUsers.length === 0" class="no-data">
+    <p>No Staff Users Found</p>
+  </div>
+</div>
