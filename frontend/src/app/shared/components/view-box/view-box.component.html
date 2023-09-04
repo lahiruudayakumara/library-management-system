@@ -1,0 +1,13 @@
+<div class="view-box">
+  <div class="icon">
+    <lucide-icon [name]="icon" size="50"></lucide-icon>
+  </div>
+  <div class="content">
+    <h3 class="count">{{ count }}</h3>
+    <p class="description">{{ description }}</p>
+  </div>
+  <div class="active-area" *ngIf="active || inactive">
+    <p class="icon-text"><lucide-icon [name]="ShieldCheck" size="24" class="my-icon"></lucide-icon>{{ active }}</p>
+    <p class="icon-text"><lucide-icon [name]="ShieldX" size="24" class="my-icon"></lucide-icon>{{ inactive }}</p>
+  </div>
+</div>

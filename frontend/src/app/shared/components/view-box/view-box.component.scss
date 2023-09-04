@@ -1,0 +1,87 @@
+.view-box {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+  max-width: auto;
+  gap: 0.5rem;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .icon {
+    margin-right: 1rem;
+    color: #007bff;
+    background-color: #007bff33;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+
+    lucide-icon {
+      display: block;
+    }
+  }
+
+  .content {
+    .count {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0;
+      color: #343a40;
+    }
+
+    .description {
+      margin: 0;
+      color: #6c757d;
+    }
+  }
+
+  .active-area {
+    display: flex;
+    // flex-direction: column;
+    align-items: center;
+    margin-left: auto;
+    justify-content: center;
+    text-align: center;
+
+    lucide-icon {
+      display: block;
+    }
+
+    .icon-text {
+      margin-right: 0.5rem;
+
+      padding: 0.5rem;
+      border-radius: 0.2rem;
+
+      lucide-icon {
+        display: block;
+      }
+    }
+
+    .icon-text:first-child {
+      .my-icon {
+        color: #28a745;
+        background-color: #28a74533;
+        padding: 0.2rem;
+        margin-bottom: 5px;
+        border-radius: 0.2rem;
+      }
+    }
+
+    .icon-text:last-child {
+      .my-icon {
+        color: #ff0000;
+        background-color: #a7282833;
+        padding: 0.2rem;
+        margin-bottom: 5px;
+        border-radius: 0.2rem;
+      }
+    }
+  }
+}
