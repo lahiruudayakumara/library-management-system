@@ -1,0 +1,41 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <button (click)="changeSideBar()">
+      <lucide-angular [img]="AlignJustify" class="my-icon"></lucide-angular>
+    </button>
+    <div class="logo">
+      <img
+        src="https://static.vecteezy.com/system/resources/thumbnails/004/853/320/small/book-read-library-study-line-icon-illustration-logo-template-suitable-for-many-purposes-free-vector.jpg"
+        height="40px"
+        alt="logo"
+      />
+      <a routerLink="/">Library Managment System</a>
+    </div>
+  </div>
+  <div class="navbar-menu">
+    <button (click)="toggleNotifications()">
+      <span *ngIf="notifications.length > 0">{{ notifications.length }}</span>
+      <lucide-angular [img]="Bell" class="my-icon"></lucide-angular>
+    </button>
+    <div class="notification-popup" *ngIf="showNotifications">
+      <div class="notification-header">
+        <span>Notifications</span>
+        <button>Mark all as read</button>
+      </div>
+      <ul>
+        <li *ngFor="let notification of notifications">{{ notification }}</li>
+        <li *ngIf="notifications.length === 0">No new notifications</li>
+      </ul>
+    </div>
+    <a class="nav-link" (click)="logout()">
+      <lucide-angular [img]="LogOut" class="my-icon"></lucide-angular>
+    </a>
+    <app-action-modal
+      [isOpen]="isModalOpen"
+      title="Logout Confirmation"
+      message="Are you sure you want to log out?"
+      (onConfirm)="handleLogoutResponse($event)"
+    >
+    </app-action-modal>
+  </div>
+</nav>
