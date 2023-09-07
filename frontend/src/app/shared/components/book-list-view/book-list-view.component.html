@@ -1,0 +1,40 @@
+<div class="user-list">
+  <div class="header">
+    <h2>Book List</h2>
+    <button class="add-user-btn" (click)="addUser()">Add New Book</button>
+  </div>
+  <app-add-book-modal
+  *ngIf="showModal"
+  (closeModal)="closeModal()"
+  (addBook)="addBook($event)">
+</app-add-book-modal>
+
+
+  <table>
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>User Name</th>
+        <th>Book Issued</th>
+        <th>Department</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of books">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.bookIssued }}</td>
+        <td>{{ user.department }}</td>
+        <td>
+          <button (click)="editUser(user)">
+            <lucide-angular [img]="FilePenLine" size="20" class="my-icon"></lucide-angular>
+          </button>
+          <button (click)="deleteUser(user.id)">
+            <lucide-angular [img]="Trash2" size="20" class="my-icon"></lucide-angular>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
