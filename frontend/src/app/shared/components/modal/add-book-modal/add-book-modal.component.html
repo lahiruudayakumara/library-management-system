@@ -1,0 +1,57 @@
+<div class="modal-overlay" *ngIf="isOpen">
+  <div class="modal">
+    <div class="header">
+      <lucide-angular [img]="BookText" size="24" class="my-icon"></lucide-angular>
+      <h3>Add Books</h3>
+    </div>
+    <hr />
+    <form (ngSubmit)="handleYes()">
+      <div class="form-container">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input id="title" [(ngModel)]="newBook.title" name="title" placeholder="Enter title" required />
+        </div>
+        <div class="form-group">
+          <label for="author">Author</label>
+          <input id="author" [(ngModel)]="newBook.author" name="author" placeholder="Enter author" required />
+        </div>
+        <div class="form-group">
+          <label for="isbn">ISBN</label>
+          <input id="isbn" [(ngModel)]="newBook.isbn" name="isbn" placeholder="Enter ISBN" required />
+        </div>
+        <div class="form-group">
+          <label for="genres">Genres</label>
+          <input id="genres" [(ngModel)]="newBook.genresString" name="genres"
+            placeholder="Enter genres (comma-separated)" />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" [(ngModel)]="newBook.description" name="description"
+            placeholder="Enter description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="publishedDate">Published Date</label>
+          <input id="publishedDate" [(ngModel)]="newBook.publishedDate" name="publishedDate" type="date" />
+        </div>
+        <div class="form-group">
+          <label for="totalCopies">Total Copies</label>
+          <input id="totalCopies" (ngModel)="newBook.totalCopies" name="totalCopies" type="number"
+            placeholder="Enter total copies" />
+        </div>
+        <div class="form-group">
+          <label for="availableCopies">Available Copies</label>
+          <input id="availableCopies" (ngModel)="newBook.availableCopies" name="availableCopies" type="number"
+            placeholder="Enter available copies" />
+        </div>
+      </div>
+      <app-barcode [value]="newBook.isbn" [options]="{ height: 50, displayValue: true }"></app-barcode>
+      <hr />
+      <div class="modal-actions">
+        <button type="submit" class="yes-btn">Add</button>
+        <button (click)="handleNo()" class="no-btn">Cancal</button>
+      </div>
+    </form>
+  </div>
+  <app-alert-modal [isOpen]="isAlertOpen" type="success" title="Error" message="Please fill all the fields"></app-alert-modal>
+</div>
