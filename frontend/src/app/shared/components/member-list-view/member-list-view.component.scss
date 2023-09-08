@@ -1,0 +1,97 @@
+.member-list {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  min-height: 350px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h2 {
+      margin: 0;
+    }
+
+    .add-member-btn {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    // thead {
+    //   background-color: #f4f4f4;
+    // }
+
+    th, td {
+      // border: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    // tr:nth-child(even) {
+    //   background-color: #f9f9f9;
+    // }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    th {
+      // background-color: #f1;
+      // color: white;
+    }
+
+    button {
+      margin-right: 5px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+
+      &:nth-child(1) {
+        background-color: transparent;
+        color: green;
+
+        &:hover {
+          background-color: #21883760;
+        }
+      }
+
+      &:nth-child(2) {
+        background-color: transparent;
+        color: red;
+
+        &:hover {
+          background-color: #c823334d;
+        }
+      }
+    }
+  }
+
+  .no-data {
+    text-align: center;
+    font-size: 1rem;
+    color: #6c757d;
+    margin-top: 8rem;
+  }
+}
