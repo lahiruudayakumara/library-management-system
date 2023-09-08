@@ -1,0 +1,14 @@
+
+main {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+.main-content {
+  margin-left: 230px; /* Sidebar width */
+  margin-top: 64px; /* Navbar height */
+  padding: 2rem;
+  flex: 1;
+  background-color: #e9ecef;
+  overflow-y: auto;
+}
+}
