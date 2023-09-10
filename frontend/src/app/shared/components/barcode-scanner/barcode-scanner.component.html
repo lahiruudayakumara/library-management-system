@@ -1,0 +1,15 @@
+<div class="scanner-container">
+  <zxing-scanner
+    [formats]="formats"
+    [torch]="false"
+    [autostart]="true"
+    (scanSuccess)="onScanSuccess($event)"
+    (camerasFound)="onCamerasFound($event)"
+    (scanError)="onError($event)"
+    class="scanner">
+  </zxing-scanner>
+
+  <div  class="scan-result">
+    <p><strong>Scanned Code:</strong> {{ scanResult }}</p>
+  </div>
+</div>
