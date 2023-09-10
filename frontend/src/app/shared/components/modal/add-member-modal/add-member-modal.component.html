@@ -1,0 +1,60 @@
+<div class="modal-overlay" *ngIf="isOpen">
+  <div class="modal">
+    <div class="header">
+      <lucide-angular [img]="Users" size="24" class="my-icon"></lucide-angular>
+      <h3>Register User</h3>
+    </div>
+    <hr />
+    <form (ngSubmit)="handleRegister()">
+      <div class="form-container">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            id="name"
+            [(ngModel)]="newMember.name"
+            name="name"
+            placeholder="Enter full name"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            [(ngModel)]="newMember.email"
+            name="email"
+            placeholder="Enter email"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="membershipType">Password</label>
+          <select
+            id="membershipType"
+            [(ngModel)]="newMember.membershipType"
+            name="membershipType"
+            required
+            autocomplete="off"
+          >
+            <option value="Basic">Basic</option>
+            <option value="Bronze">Bronze</option>
+            <option value="Premium">Premium</option>
+          </select>
+        </div>
+      </div>
+      <hr />
+      <div class="modal-actions">
+        <button type="submit" class="yes-btn">Register</button>
+        <button (click)="handleCancel()" class="no-btn">Cancel</button>
+      </div>
+    </form>
+  </div>
+  <app-alert-modal
+    [isOpen]="isAlertOpen"
+    type="success"
+    title="Member Registered"
+    message="Member has been registered successfully"
+  ></app-alert-modal>
+</div>
