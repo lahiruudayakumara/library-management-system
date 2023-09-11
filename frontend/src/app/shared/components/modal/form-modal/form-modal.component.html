@@ -1,0 +1,12 @@
+<div class="modal-overlay" *ngIf="isOpen">
+  <div class="modal">
+    <lucide-angular [img]="Info" size="60" class="my-icon"></lucide-angular>
+    <h3>{{ title }}</h3>
+    <p>{{ message }}</p>
+
+    <div class="modal-actions">
+      <button (click)="handleYes()" class="yes-btn">Yes</button>
+      <button (click)="handleNo()" class="no-btn">No</button>
+    </div>
+  </div>
+</div>
