@@ -1,19 +1,13 @@
-FROM node:18 AS build
+FROM node:18-alpine AS base
 
-WORKDIR /app
+WORKDIR  /usr/src/app
 
-COPY package*.json ./
+COPY  package*.json  .
 
-# Install dependencies
-RUN npm install
+RUN  npm  i
 
-COPY . .
+COPY  .  .
 
-RUN npm run build --prod
+EXPOSE  4200
 
-FROM nginx:alpine
-COPY --from=build /app/dist/ /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD  [  "npm",  "start"  ]

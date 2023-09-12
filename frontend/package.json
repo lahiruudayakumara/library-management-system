@@ -2,11 +2,11 @@
   "name": "library-manament-system-frontend",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "ng": "./node_modules/.bin/ng",
+    "start": "./node_modules/.bin/ng serve --watch --host 0.0.0.0",
+    "build": "./node_modules/.bin/ng build",
+    "watch": "./node_modules/.bin/ng build --watch --configuration development",
+    "test": "./node_modules/.bin/ng test"
   },
   "private": true,
   "dependencies": {
@@ -19,7 +19,9 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@auth0/angular-jwt": "^5.2.0",
+    "@ngrx/effects": "^18.1.1",
     "@ngrx/store": "^18.1.1",
+    "@types/jwt-decode": "^3.1.0",
     "@zxing/ngx-scanner": "^19.0.0",
     "frontend": "file:",
     "jsbarcode": "^3.11.6",

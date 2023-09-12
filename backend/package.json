@@ -8,9 +8,9 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "ts-node index.ts",
-    "dev": "nodemon",
-    "build": "tsc"
+    "start": "NODE_PATH=./build node index.ts",
+    "build": "tsc -p .",
+    "dev": "./node_modules/.bin/nodemon index.ts"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
