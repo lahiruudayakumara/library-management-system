@@ -2,7 +2,17 @@ const { config } = require("dotenv");
 
 const stripe = require("stripe")(config.STRIPE_SECRET_KEY);
 
-exports.createCheckoutSession = async (req, res, next) => {
+exports.createCheckoutSession = async (
+  req: { body: { penaltyId: any; amount: any } },
+  res: {
+    status: (arg0: number) => {
+      (): any;
+      new (): any;
+      json: { (arg0: { success: boolean; url: any }): void; new (): any };
+    };
+  },
+  next: (arg0: unknown) => void
+) => {
   const { penaltyId, amount } = req.body;
 
   try {
@@ -19,7 +29,9 @@ exports.createCheckoutSession = async (req, res, next) => {
         },
       ],
       mode: "payment",
-      success_url: `${require("../config/config").CLIENT_URL}/payment-success?penaltyId=${penaltyId}`,
+      success_url: `${
+        require("../config/config").CLIENT_URL
+      }/payment-success?penaltyId=${penaltyId}`,
       cancel_url: `${require("../config/config").CLIENT_URL}/payment-cancel`,
     });
 

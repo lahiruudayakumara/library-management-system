@@ -13,6 +13,12 @@ const UserSchema = new mongoose.Schema(
         required: [true, 'Name is required'],
         trim: true,
     },
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+      trim: true,
+    },
     password: {
       type: String,
       required: [true, "Password is required"],
@@ -25,7 +31,7 @@ const UserSchema = new mongoose.Schema(
     },
     isActive: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

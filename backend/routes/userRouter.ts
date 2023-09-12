@@ -1,51 +1,46 @@
+import {
+    deleteUser,
+    getAllUsers,
+    getStaffUsers,
+    getUserCount,
+    getUserDetails,
+    loginUser,
+    registerUser,
+    updateUser,
+} from "../controllers/userController";
 import express, { Router } from "express";
-import { getAllUsers, getStaffUsers, getUserCount, getUserDetails, loginUser, registerUser } from "../controllers/userController";
 
 import { registerValidation } from "../validation/authValidator";
 import verifyRole from "../middlewares/roleBasedAccess";
 
 const router: Router = express.Router();
 
-// Register route
-router.post("/register", registerValidation, registerUser);
-
 // Login route (removed validation as per your request)
 router.post("/login", loginUser);
 
-// Get user details route
+// CRUD operations for users
 router.get(
-    "/details",
-    verifyRole(["Staff", "Librarian", "Admin"]),
-    getUserDetails
+  "/details",
+  verifyRole(["Staff", "Librarian", "Admin"]),
+  getUserDetails
 );
-
-// Get all users route
-router.get(
-    "/all",
-    verifyRole(["Librarian", "Admin"]),
-    getAllUsers
-);
+router.post("/register", registerValidation, registerUser);
+router.put("/update/:id", verifyRole(["Librarian", "Admin"]), updateUser);
+router.delete("/delete/:id", verifyRole(["Admin"]), deleteUser);
+router.get("/all", verifyRole(["Librarian", "Admin"]), getAllUsers);
 
 // Get staff users route
 router.get(
-    "/all-staff",
-    verifyRole(["Staff", "Librarian", "Admin", "Assistant"]),
-    getStaffUsers
+  "/all-staff",
+  verifyRole(["Staff", "Librarian", "Admin", "Assistant"]),
+  getStaffUsers
 );
 
 // Get user count by role route
 router.get(
-    "/count/:role",
-    verifyRole(["Staff", "Librarian", "Admin"]),
-    getUserCount
+  "/count/:role",
+  verifyRole(["Staff", "Librarian", "Admin"]),
+  getUserCount
 );
-
-// Uncomment this block if needed in the future
-// router.get(
-//     "/admin-route",
-//     authenticateUser,
-//     authorizeRoles(["Librarian"]),
-//     (req: Request, res: Response) => res.status(200).send("Admin route accessed")
-// );
 
 export default router;

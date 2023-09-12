@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import Member from "../models/memberModel";
+import logger from "../utils/logger";
 
 // Register Member
 export const registerMember = async (
@@ -33,18 +34,39 @@ export const registerMember = async (
   }
 };
 
-// Get All Members
+// Get All Members with Pagination
 export const getAllMembers = async (req: any, res: any, next: NextFunction) => {
   try {
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+
+    const skip = (page - 1) * limit;
+
+    const totalMembers = await Member.countDocuments();
+
     const members = await Member.find()
+      .skip(skip)
+      .limit(limit)
       .populate("createdBy", "name email")
       .populate("updatedBy", "name email");
 
-    res.status(200).json({ success: true, data: members });
+    const pagination = {
+      totalItems: totalMembers,
+      currentPage: page,
+      totalPages: Math.ceil(totalMembers / limit),
+      pageSize: limit,
+    };
+
+    res.status(200).json({
+      success: true,
+      data: members,
+      pagination,
+    });
   } catch (error) {
     next(error);
   }
 };
+
 
 // Get Member by ID
 export const getMemberById = async (
@@ -323,3 +345,22 @@ export const bulkUpdateMemberships = async (
     next(error);
   }
 };
+
+export const filterMembers = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { search } = req.body
+
+    const members = await Member.find({
+      name: { $regex: search, $options: "i" },
+    });
+
+    res.status(200).json({ success: true, data: members });
+  } catch (error) {
+    next(error);
+  }
+};
+

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import Payment from "../models/paymentModel";
 import User from "../models/userModel";
+import logger from "../utils/logger";
 
 // Create a payment intent with Stripe
 export const createPayment = async (req: Request, res: Response) => {
@@ -28,7 +29,7 @@ export const createPayment = async (req: Request, res: Response) => {
       clientSecret: paymentIntent.client_secret,
     });
   } catch (error) {
-    console.error(error);
+    logger.error("Error creating payment intent", error);
     res.status(500).send("Error creating payment intent");
   }
 };
@@ -58,7 +59,7 @@ export const stripeWebhook = async (req: Request, res: Response) => {
 
     res.status(200).send("Webhook handled");
   } catch (error) {
-    console.error(error);
+    logger.error("Error handling webhook", error);
     res.status(400).send("Webhook error");
   }
 };

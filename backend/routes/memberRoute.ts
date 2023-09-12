@@ -1,6 +1,7 @@
 import {
   bulkUpdateMemberships,
   deleteMember,
+  filterMembers,
   getAllMembers,
   getExpiredMembers,
   getMemberById,
@@ -24,6 +25,7 @@ router.get("/", verifyRole(["Staff", "Librarian", "Admin", "Assistant"]), getAll
 router.get("/:id", verifyRole(["Staff", "Librarian", "Admin", "Assistant"]), getMemberById);
 router.put("/:id", verifyRole(["Librarian", "Admin", "Assistant"]), updateMember);
 router.delete("/:id", verifyRole(["Librarian", "Admin", "Assistant"]), deleteMember);
+router.post("/filter", verifyRole(["Staff", "Librarian", "Admin", "Assistant"]), filterMembers);
 
 // Membership-specific routes
 router.post("/:id/renew", verifyRole(["Staff", "Librarian", "Admin", "Assistant"]), renewMembership);

@@ -3,11 +3,32 @@ import { NextFunction, Request, Response } from "express";
 import Book from "../models/bookModel";
 import logger from "../utils/logger";
 
-// Get all books
 export const getAllBooks = async (req: Request, res: Response): Promise<void> => {
   try {
-    const books = await Book.find().sort({ createdAt: -1 });
-    res.status(200).json({ success: true, data: books });
+    const page = parseInt(req.query.page as string, 10) || 1;
+    const limit = parseInt(req.query.limit as string, 10) || 10;
+
+    const skip = (page - 1) * limit;
+
+    const totalBooks = await Book.countDocuments();
+
+    const books = await Book.find()
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalPages = Math.ceil(totalBooks / limit);
+
+    res.status(200).json({
+      success: true,
+      data: books,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalBooks,
+        limit,
+      },
+    });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -82,9 +103,29 @@ export const getRecommendations = async (req: Request, res: Response, next: Next
 // Get book count
 export const getBookCount = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const bookCount = await Book.countDocuments();
-    res.status(200).json({ success: true, data: bookCount });
+    const totalBooks = await Book.countDocuments();
+    res.status(200).json({ success: true, data: totalBooks });
   } catch (error: any) {
     res.status(400).json({ success: false, error: error.message });
+  }
+};
+
+
+// Search books
+export const filterBooks = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { search } = req.body
+
+    const books = await Book.find({
+      isbn: { $regex: search, $options: "i" },
+    });
+
+    res.status(200).json({ success: true, data: books });
+  } catch (error) {
+    next(error);
   }
 };

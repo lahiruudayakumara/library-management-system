@@ -10,9 +10,10 @@ export const registerUser = async (req: Request, res: Response | any) => {
   const {
     username,
     name,
+    email,
     password,
     role,
-  }: { username: string; name: string; password: string; role: string } =
+  }: { username: string; name: string; email: string; password: string; role: string } =
     req.body;
 
   try {
@@ -24,11 +25,11 @@ export const registerUser = async (req: Request, res: Response | any) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, name, password: hashedPassword, role });
+    const user = new User({ username, name, password: hashedPassword, email, role });
     await user.save();
 
     logger.info(`New user registered: ${username}`);
-    return res.status(201).send("User registered successfully");
+    return res.status(201).send({ success: true, data: user });
   } catch (error: any) {
     logger.error(`Error during registration: ${error.message}`);
     return res.status(500).send("Server error");
@@ -82,16 +83,37 @@ export const getUserDetails = async (req: any, res: any) => {
 // Fetch all users
 export const getAllUsers = async (req: any, res: any) => {
   try {
-    const users = await User.find();
+    const page = parseInt(req.query.page as string, 10) || 1;
+    const limit = parseInt(req.query.limit as string, 10) || 10;
+
+    const skip = (page - 1) * limit;
+
+    const totalUsers = await User.countDocuments();
+
+    const users = await User.find()
+      .skip(skip)
+      .limit(limit);
+
     if (!users || users.length === 0) {
       return res.status(404).send("No users found.");
     }
+
     logger.info(
       `Fetched user details for: ${users
         .map((user: any) => user.username)
         .join(", ")}`
     );
-    return res.status(200).json({ success: true, data: users });
+
+    return res.status(200).json({
+      success: true,
+      data: users,
+      pagination: {
+        totalItems: totalUsers,
+        currentPage: page,
+        totalPages: Math.ceil(totalUsers / limit),
+        pageSize: limit,
+      },
+    });
   } catch (error: any) {
     logger.error(`Error fetching user details: ${error.message}`);
     return res.status(500).send("Server error.");
@@ -148,3 +170,44 @@ export const getUserCount = async (
     return res.status(500).json({ success: false, message: "Server error." });
   }
 };
+
+// Update user details
+export const updateUser = async (req: any, res: any) => {
+  const { name, email, role, username, isActive }: { name: string; email: string; role: string, username: string, isActive: boolean } =
+    req.body;
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { name, email, role, username, isActive },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).send("User not found.");
+    }
+
+    logger.info(`Updated user details for: ${user.username}`);
+    return res.status(200).json({ success: true, data: user });
+  } catch (error: any) {
+    logger.error(`Error updating user details: ${error.message}`);
+    return res.status(500).send("Server error.");
+  }
+};
+
+// Delete user
+export const deleteUser = async (req: Request, res: any) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+
+    if (!user) {
+      return res.status(404).send("User not found.");
+    }
+
+    logger.info(`Deleted user: ${user.username}`);
+    return res.status(200).json({ success: true, data: user });
+  } catch (error: any) {
+    logger.error(`Error deleting user: ${error.message}`);
+    return res.status(500).send("Server error.");
+  } 
+}
