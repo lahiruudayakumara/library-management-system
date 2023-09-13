@@ -12,22 +12,27 @@ export const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./modules/admin/admin.module').then((m) => m.DashboardModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: Role.Admin },
   },
-  // {
-  //   path: 'books',
-  //   loadChildren: () => import('./features/books/books.module').then((m) => m.BooksModule),
-  //   canActivate: [AuthGuard, RoleGuard],
-  //   data: { role: Role.Librarian },
-  // },
-  // {
-  //   path: 'users',
-  //   loadChildren: () => import('./features/users/users.module').then((m) => m.UsersModule),
-  //   canActivate: [AuthGuard, RoleGuard],
-  //   data: { role: Role.Admin },
-  // },
+  {
+    path: 'librarian',
+    loadChildren: () => import('./modules/librarian/librarian.module').then((m) => m.LibrarianModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: Role.Librarian },
+  },
+  {
+    path: 'assistant',
+    loadChildren: () => import('./modules/assistant/assistant.module').then((m) => m.AssistantModule),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: Role.Assistant },
+  },
   {
     path: 'auth/login',
     component: LoginComponent,
   },
+  {
+    path: '**',
+    redirectTo: 'auth/login',
+  }
 ];
