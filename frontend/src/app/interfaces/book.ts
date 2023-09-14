@@ -15,3 +15,33 @@ export interface IBook {
   updatedAt: string;
   __v: number;
 }
+
+export interface IPagination {
+  currentPage: number;
+  totalPages: number;
+  totalBooks: number;
+  limit: number;
+}
+
+export interface IBookState {
+  books: IBook[];
+  searchTerm: string;
+  filterBooks: IBook[];
+  pagination: IPagination;
+  loading: boolean;
+  error: string | null;
+}
+
+export interface IAddBook {
+  title: string;
+  author: string;
+  isbn: string;
+  genresString: string;
+  description: string;
+  publishedDate: string;
+  totalCopies: number;
+  availableCopies: number;
+  addedBy: string;
+  updatedBy: string;
+  isActive: boolean;
+}
