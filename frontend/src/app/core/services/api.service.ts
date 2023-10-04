@@ -12,12 +12,24 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   // Staff API
-  getUsers(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/users/all`);
+  getUsers(page?: number, limit?: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/users/all?page=${page}&limit=${limit}`);
   }
 
-  getStaffUsers(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/users/all-staff`);
+  addUser(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/users/register`, data);
+  }
+
+  updateUser(data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/api/users/update/${data._id}`, data);
+  }
+
+  deleteUser(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/api/users/delete/${id}`);
+  }
+
+  getStaffUsers(page?: number, limit?: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/users/all-staff?page=${page}&limit=${limit}`);
   }
 
   getUsersCount(data: string): Observable<any> {
@@ -25,8 +37,12 @@ export class ApiService {
   }
 
   // Book API
-  getBooks(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/books/all`);
+  getBooksCount(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/books/count`);
+  }
+
+  getBooks(page?: number, limit?: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/books/all?page=${page}&limit=${limit}`);
   }
 
   addBook(data: any): Observable<any> {
@@ -41,12 +57,28 @@ export class ApiService {
     return this.http.delete(`${this.apiUrl}/api/books/${id}`);
   }
 
+  filterBooks(serchparams: string, page: number, limit: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/books/filter`, { search: serchparams });
+  }
+
   // Member API
-  getMembers(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/members`);
+  getMembers(page?: number, limit?: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/members?page=${page}&limit=${limit}`);
   }
 
   registerMember(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/api/members/register`, data);
+  }
+
+  updateMember(data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/api/members/${data._id}`, data);
+  }
+
+  deleteMember(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/api/members/${id}`);
+  }
+
+  filterMembers(serchparams: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/members/filter`, { search: serchparams });
   }
 }
