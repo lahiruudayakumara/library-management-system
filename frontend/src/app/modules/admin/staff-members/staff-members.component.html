@@ -1,41 +1,73 @@
 <div class="staff-members">
   <div class="header">
-    <h2>Staff List</h2>
+    <h2>User List</h2>
     <div class="btn-area">
-      <button class="add-user-btn" (click)="addUser()">Add New User <lucide-angular [img]="SquarePlus" size="20" class="my-icon" /></button>
+      <button class="add-user-btn" (click)="addUser()">
+        Add New User
+        <lucide-angular [img]="SquarePlus" size="20" class="my-icon" />
+      </button>
       <label class="Search-field">
         <lucide-angular [img]="Search" size="20" class="my-icon" />
-        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="filterUsers()" placeholder="Search" />
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="filterUsers()"
+          placeholder="Search"
+        />
       </label>
     </div>
   </div>
-  <table>
-    <thead>
-      <tr>
-        <th>User Name</th>
-        <th>Name</th>
-        <th>Role</th>
-        <th>Book Issued</th>
-        <th>Department</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of filteredUsers">
-        <td>{{ user.username }}</td>
-        <td>{{ user.name }}</td>
-        <td>{{ user.role }}</td>
-        <td>{{ formatDate(user.createdAt) }}</td>
-        <td>{{ user.isActive }}</td>
-        <td>
-          <button (click)="editUser(user)">
-            <lucide-angular [img]="FilePenLine" size="20" class="my-icon"></lucide-angular>
-          </button>
-          <button (click)="deleteUser(user._id)">
-            <lucide-angular [img]="Trash2" size="20" class="my-icon"></lucide-angular>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="main-area">
+    <div class="table-container">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>User Name</th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Book Issued</th>
+              <th>Current Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users$ | async">
+              <td>{{ user.username }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.role }}</td>
+              <td>{{ user.createdAt | dateFormat }}</td>
+              <td>{{ user.isActive }}</td>
+              <td>
+                <button (click)="editUser(user)">
+                  <lucide-angular
+                    [img]="FilePenLine"
+                    size="20"
+                    class="my-icon"
+                  ></lucide-angular>
+                </button>
+                <button (click)="deleteUser(user._id)">
+                  <lucide-angular
+                    [img]="Trash2"
+                    size="20"
+                    class="my-icon"
+                  ></lucide-angular>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pagnation-area">
+        <app-pagination
+          [currentPage]="currentPage"
+          [totalItems]="totalItems"
+          [totalPages]="totalPages"
+          (prevPage)="prevPage()"
+          (onLimitChange)="onLimitChange($event)"
+          (nextPage)="nextPage()"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
 </div>
