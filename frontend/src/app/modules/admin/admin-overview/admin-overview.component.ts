@@ -4,6 +4,7 @@ import { AddMemberModalComponent } from "../../../shared/components/modal/add-me
 import { ApiService } from '../../../core/services/api.service';
 import { BookListViewComponent } from "../../../shared/components/book-list-view/book-list-view.component";
 import { Component } from '@angular/core';
+import { LoggerService } from '../../../core/services/logger.service';
 import { MemberListViewComponent } from "../../../shared/components/member-list-view/member-list-view.component";
 import { StaffListViewComponent } from "../../../shared/components/staff-list-view/staff-list-view.component";
 import { TopChoiceListViewComponent } from "../../../shared/components/top-choice-list-view/top-choice-list-view.component";
@@ -15,7 +16,7 @@ import { WelcomeDateTimeComponentComponent } from "../../../shared/components/we
 @Component({
   selector: 'app-admin-overview',
   standalone: true,
-  imports: [WelcomeDateTimeComponentComponent, ViewBoxComponent, UserListViewComponent, BookListViewComponent, TopChoiceListViewComponent, StaffListViewComponent, MemberListViewComponent, AddMemberModalComponent],
+  imports: [WelcomeDateTimeComponentComponent, ViewBoxComponent, UserListViewComponent, TopChoiceListViewComponent, MemberListViewComponent],
   templateUrl: './admin-overview.component.html',
   styleUrl: './admin-overview.component.scss'
 })
@@ -28,24 +29,69 @@ export class AdminOverviewComponent {
   readonly BookText = BookText;
   readonly BookMarked = BookMarked;
 
-  userCount: UserCount = {} as UserCount;
+  adminCount: UserCount = {} as UserCount;
+  librarianCount: UserCount = {} as UserCount;
+  assistantCount: UserCount = {} as UserCount;
+  staffCount: UserCount = {} as UserCount;
+  booksCount: number = 0;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private logger: LoggerService) {}
 
   ngOnInit(): void {
-    this.loadUserCount();
+    this.loadAdminCount();
+    this.loadLibrarianCount();
+    this.loadStaffCount();
+    this.loadUAssistantCount();
     this.loadBooks();
     this.loadStaff();
   }
 
-  loadUserCount(): void {
+  loadAdminCount(): void {
+    this.apiService.getUsersCount('Admin').subscribe({
+      next: (data) => {
+        if (data.success) {
+          this.adminCount = data.data;
+        } else {
+          this.logger.error('Error fetching users:', data);
+        }
+      },
+      error: (err) => console.error('Error fetching users:', err),
+    });
+  }
+
+  loadLibrarianCount(): void {
     this.apiService.getUsersCount('Librarian').subscribe({
       next: (data) => {
         if (data.success) {
-          console.log('Users:', data.data);
-          this.userCount = data.data;
+          this.librarianCount = data.data;
         } else {
-          console.error('Error fetching users:', data);
+          this.logger.error('Error fetching users:', data);
+        }
+      },
+      error: (err) => console.error('Error fetching users:', err),
+    });
+  }
+
+  loadStaffCount(): void {
+    this.apiService.getUsersCount('Staff').subscribe({
+      next: (data) => {
+        if (data.success) {
+          this.staffCount = data.data;
+        } else {
+          this.logger.error('Error fetching users:', data);
+        }
+      },
+      error: (err) => console.error('Error fetching users:', err),
+    });
+  }
+
+  loadUAssistantCount(): void {
+    this.apiService.getUsersCount('Assistant').subscribe({
+      next: (data) => {
+        if (data.success) {
+          this.assistantCount = data.data;
+        } else {
+          this.logger.error('Error fetching users:', data);
         }
       },
       error: (err) => console.error('Error fetching users:', err),
@@ -53,12 +99,12 @@ export class AdminOverviewComponent {
   }
 
   loadBooks(): void {
-    this.apiService.getBooks().subscribe({
+    this.apiService.getBooksCount().subscribe({
       next: (data) => {
-        if (data.success && Array.isArray(data.data)) {
-          console.log('Books:', data.data);
+        if (data.success) {
+          this.booksCount = data.data;
         } else {
-          console.error('Error fetching books:', data);
+          this.logger.error('Error fetching books:', data);
         }
       },
       error: (err) => console.error('Error fetching books:', err),
@@ -66,15 +112,5 @@ export class AdminOverviewComponent {
   }
 
   loadStaff(): void {
-    // this.apiService.getStaff().subscribe({
-    //   next: (data) => {
-    //     if (data.success && Array.isArray(data.data)) {
-    //       console.log('Staff:', data.data);
-    //     } else {
-    //       console.error('Error fetching staff:', data);
-    //     }
-    //   },
-    //   error: (err) => console.error('Error fetching staff:', err),
-    // });
   }
 }

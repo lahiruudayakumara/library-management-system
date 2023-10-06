@@ -4,7 +4,8 @@
   height: 100vh;
 
   .main-content {
-    margin-left: 230px;
+    margin-left: 250px;
+    width: 100%;
     margin-top: 64px;
     padding: 2rem;
     flex: 1;
@@ -34,6 +35,10 @@
     .main-content {
       margin: 0;
       padding: 1rem;
+
+      &.active {
+        margin-left: 0;
+      }
     }
   }
 }

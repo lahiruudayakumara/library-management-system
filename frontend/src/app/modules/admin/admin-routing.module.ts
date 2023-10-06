@@ -37,7 +37,7 @@ const routes: Routes = [
       //   component: AdminChatComponent,
       // },
       {
-        path: 'Settings',
+        path: 'settings',
         component: AdminSettingsComponent,
       },
     ],
