@@ -1,1 +1,40 @@
-<p>assistant-overview works!</p>
+<div class="assistant-overview">
+  <app-welcome-date-time-component
+    [username]="''"
+  ></app-welcome-date-time-component>
+  <div class="view-boxs">
+    <!-- <app-view-box
+      [count]="adminCount.all + librarianCount.all"
+      [active]="adminCount.active + librarianCount.active"
+      [inactive]="adminCount.deactive + librarianCount.deactive"
+      [icon]="UserPen"
+      [description]="'Top Level Admin'"
+    ></app-view-box> -->
+    <app-view-box
+      [count]="assistantCount.all"
+      [active]="assistantCount.active"
+      [inactive]="assistantCount.deactive"
+      [icon]="UserPen"
+      [description]="'Assistant'"
+    ></app-view-box>
+    <app-view-box
+      [count]="staffCount.all"
+      [icon]="UserPen"
+      [active]="staffCount.active"
+      [inactive]="staffCount.deactive"
+      [description]="'Staff'"
+    ></app-view-box>
+    <app-view-box
+      [count]="150"
+      [icon]="BookText"
+      [description]="'Books'"
+    ></app-view-box>
+  </div>
+  <div class="list-area">
+    <app-book-list-view />
+    <app-member-list-view />
+  </div>
+  <div class="top-choice">
+    <app-top-choice-list-view></app-top-choice-list-view>
+  </div>
+</div>
