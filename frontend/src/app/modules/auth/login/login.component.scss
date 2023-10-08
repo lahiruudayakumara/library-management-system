@@ -1,8 +1,9 @@
 .login-main {
   align-items: center;
-  min-height: 100%;
+  min-height: 100vh;
   display: flex;
   margin: auto;
+
   .login-container {
     margin: auto;
     width: 100%;
@@ -18,7 +19,13 @@
 
     h2 {
       font-size: 24px;
-      margin-bottom: 20px;
+      margin: 20px;
+      color: #333;
+    }
+
+    h3 {
+      font-size: 18px;
+      margin: 10px;
       color: #333;
     }
 
@@ -83,6 +90,76 @@
         &:hover {
           text-decoration: underline;
         }
+      }
+    }
+  }
+
+  // Responsive Styles
+  @media (max-width: 768px) {
+    .login-container {
+      padding: 15px;
+      margin-top: 40px;
+      margin-bottom: 40px;
+
+      h2 {
+        font-size: 20px;
+      }
+
+      h3 {
+        font-size: 16px;
+      }
+
+      form {
+        gap: 10px;
+
+        input {
+          font-size: 14px;
+          padding: 10px;
+        }
+
+        button {
+          font-size: 14px;
+          padding: 10px;
+        }
+      }
+
+      .footer {
+        font-size: 12px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .login-container {
+      padding: 10px;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      max-width: 80%; // Reduce width for smaller screens
+
+      h2 {
+        font-size: 18px;
+      }
+
+      h3 {
+        font-size: 14px;
+      }
+
+      form {
+        gap: 8px;
+
+        input {
+          font-size: 12px;
+          padding: 8px;
+        }
+
+        button {
+          font-size: 14px;
+          padding: 8px;
+        }
+      }
+
+      .footer {
+        font-size: 10px;
       }
     }
   }

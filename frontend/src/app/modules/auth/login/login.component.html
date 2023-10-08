@@ -1,14 +1,31 @@
 <div class="login-main">
   <div class="login-container">
-    <img
-      src="https://static.vecteezy.com/system/resources/thumbnails/004/853/320/small/book-read-library-study-line-icon-illustration-logo-template-suitable-for-many-purposes-free-vector.jpg"
-      width="200" alt="logo" />
-    <p>Library Management System</p>
+    <img src="/assets/images/logo.png" width="200" alt="logo" />
+    <h3>Library Management System</h3>
     <h2>Login</h2>
-    <form (ngSubmit)="Login()">
-      <input type="text" [(ngModel)]="username" name="username" placeholder="Username" required />
-      <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required />
+    <form (ngSubmit)="login()">
+      <input
+        type="text"
+        [(ngModel)]="username"
+        name="username"
+        placeholder="Username"
+        required
+      />
+      <input
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        placeholder="Password"
+        required
+      />
       <button type="submit">Login</button>
     </form>
   </div>
+  <app-alert-modal
+    [isOpen]="errModal"
+    [message]="errorMessage"
+    [type]="'error'"
+    [title]="'Login Error'"
+    (onConfirm)="handleConfirm()"
+  ></app-alert-modal>
 </div>
