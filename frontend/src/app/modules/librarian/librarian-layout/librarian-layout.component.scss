@@ -1,0 +1,44 @@
+.dashboard-layout {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+
+  .main-content {
+    margin-left: 250px;
+    width: 100%;
+    margin-top: 64px;
+    padding: 2rem;
+    flex: 1;
+    background-color: #e9ecef;
+    overflow-y: auto;
+    transition: transform 0.2s ease-in-out;
+
+    &.active {
+      margin-left: 70px;
+      transition: transform 0.2s ease-in-out;
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+
+    .sidebar {
+      position: static;
+      width: 100%;
+      margin-top: 1rem;
+      box-shadow: none;
+    }
+
+    .main-content {
+      margin: 0;
+      padding: 1rem;
+
+      &.active {
+        margin-left: 0;
+      }
+    }
+  }
+}
