@@ -1,48 +1,36 @@
-version: '3.8'
+version: "3.9"  # Use a more recent version
 
 services:
-  backend:
-    build:
+  client:
+    build: 
+      context: ./frontend
+    ports:
+      - "4200:4200"
+      - "9229:9229" 
+    volumes:
+      - ./frontend/src:/usr/src/app/src 
+
+  server:
+    build: 
       context: ./backend
+      target: base  # If you have multiple build stages in your Dockerfile
     ports:
       - "5000:5000"
     environment:
-      - MONGO_URI=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongo:27017/${MONGO_DATABASE}?authSource=admin
-    depends_on:
-      - mongo
+      - MONGODB_URL=${MONGODB_URL} 
     volumes:
-      - ./backend:/app
-
-  frontend:
-    build:
-      context: ./frontend
-    ports:
-      - "3000:80"
+      - ./backend/src:/usr/src/app/src
+      - ./backend/nodemon.json:/usr/src/app/nodemon.json
     depends_on:
-      - backend
-    volumes:
-      - ./frontend:/app
+      - database
+    command: npm run dev
 
-  mongo:
-    image: mongo:6
-    container_name: mongo
+  database:
+    image: mongo:latest
+    volumes:
+      - mongodb_data:/data/db
     ports:
       - "27017:27017"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
-    volumes:
-      - mongo-data:/data/db
-
-  nginx:
-    image: nginx:latest
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx:/etc/nginx/conf.d
-    depends_on:
-      - frontend
-      - backend
 
 volumes:
-  mongo-data:
+  mongodb_data:
