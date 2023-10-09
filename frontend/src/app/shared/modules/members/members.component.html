@@ -1,41 +1,101 @@
 <div class="staff-members">
   <div class="header">
     <h2>Member List</h2>
+
     <div class="btn-area">
-      <button class="add-user-btn" (click)="addMember()">Add New Member <lucide-angular [img]="SquarePlus" size="20" class="my-icon" /></button>
+      <button class="add-member-btn" (click)="addMember()">
+        Add New Member
+        <lucide-angular [img]="SquarePlus" size="20" class="my-icon" />
+      </button>
       <label class="Search-field">
         <lucide-angular [img]="Search" size="20" class="my-icon" />
-        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="filterMember()" placeholder="Search" />
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Search Name"
+        />
       </label>
     </div>
   </div>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Membership Type</th>
-        <th>Created At</th>
-        <th>Membership Expiry</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let member of filteredMembers">
-        <td>{{ member.name }}</td>
-        <td>{{ member.email }}</td>
-        <td>{{ member.membershipType }}</td>
-        <td>{{ formatDate(member.createdAt) }}</td>
-        <td>{{ formatDate(member.membershipExpiry) }}</td>
-        <td>
-          <button (click)="editMember(member)">
-            <lucide-angular [img]="FilePenLine" size="20" class="my-icon"></lucide-angular>
-          </button>
-          <button (click)="deleteMember(member._id)">
-            <lucide-angular [img]="Trash2" size="20" class="my-icon"></lucide-angular>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="main-area">
+    <div class="table-container">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Membership Type</th>
+              <th>Created At</th>
+              <th>Membership Expiry</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let member of members$ | async">
+              <td>{{ member.name }}</td>
+              <td>{{ member.email }}</td>
+              <td>{{ member.membershipType }}</td>
+              <td>{{ member.createdAt | dateFormat }}</td>
+              <td>{{ member.membershipExpiry | dateFormat }}</td>
+              <td>
+                <button (click)="editMember(member)">
+                  <lucide-angular
+                    [img]="FilePenLine"
+                    size="20"
+                    class="my-icon"
+                  ></lucide-angular>
+                </button>
+                <button (click)="deleteMember(member._id)">
+                  <lucide-angular
+                    [img]="Trash2"
+                    size="20"
+                    class="my-icon"
+                  ></lucide-angular>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pagnation-area">
+        <app-pagination
+          [currentPage]="currentPage"
+          [totalItems]="totalItems"
+          [totalPages]="totalPages"
+          (prevPage)="prevPage()"
+          (onLimitChange)="onLimitChange($event)"
+          (nextPage)="nextPage()"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+  <app-add-member-modal
+    [isOpen]="isAddMemberModal"
+    (addMember)="registerMember()"
+    (errorOccurred)="handleError($event)"
+    (onClose)="closeAddMemberModal()"
+  ></app-add-member-modal>
+  <app-action-modal
+    [isOpen]="isDeleteMemberModal"
+    [type]="'warning'"
+    [title]="'Delete Member'"
+    [message]="'Are you sure you want to delete this member?'"
+    (onConfirm)="onConfirmDelete()"
+    (onClose)="onClose()"
+  ></app-action-modal>
+  <app-update-member-modal
+    [isOpen]="isEditMemberModal"
+    [editedMember]="selectedMember"
+    (onSave)="updateMember()"
+    (onClose)="onClose()"
+  ></app-update-member-modal>
+  <app-alert-modal
+    [isOpen]="isSucessModal"
+    [type]="'success'"
+    [title]="'Success'"
+    [message]="sucessMessage"
+    (onClose)="onClose()"
+  ></app-alert-modal>
 </div>
