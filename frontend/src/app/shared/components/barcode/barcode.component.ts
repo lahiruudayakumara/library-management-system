@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
 
 import JsBarcode from 'jsbarcode';
 
@@ -13,24 +13,35 @@ export class BarcodeComponent {
   @Input() value: string = ''; // The value to encode in the barcode
   @Input() options: any = {}; // Optional settings for JsBarcode
 
-  ngAfterViewInit(): void {
-    this.generateBarcode();
-  }
+  @ViewChild('barcodeElement', { static: false }) barcodeElement!: ElementRef;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['value']) {
+    if (changes['value'] && this.barcodeElement) {
       this.generateBarcode();
     }
   }
 
+  ngAfterViewInit(): void {
+    this.generateBarcode();
+  }
+
   generateBarcode(): void {
+    if (!this.value || this.value.trim() === '') {
+      console.error('Barcode value is empty or invalid');
+      return;
+    }
+
     try {
-      JsBarcode('#barcode', this.value || '000000', {
-        format: 'CODE128',
-        displayValue: true,
-        height: 100,
-        ...this.options, // Allow customization
-      });
+      if (this.barcodeElement?.nativeElement) {
+        JsBarcode(this.barcodeElement.nativeElement, this.value, {
+          format: 'CODE128',
+          displayValue: true,
+          height: 100,
+          ...this.options, // Allow customization
+        });
+      } else {
+        console.error('Barcode element is not available.');
+      }
     } catch (error) {
       console.error('Barcode generation failed:', error);
     }
