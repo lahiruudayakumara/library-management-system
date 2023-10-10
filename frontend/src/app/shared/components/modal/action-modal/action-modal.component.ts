@@ -17,6 +17,7 @@ export class ActionModalComponent {
   @Input() message: string = 'Are you sure you want to proceed?';
 
   @Output() onConfirm = new EventEmitter<boolean>();
+  @Output() onClose = new EventEmitter<void>();
 
   readonly ShieldQuestion = ShieldQuestion;
   readonly Success = ShieldCheck;
@@ -29,7 +30,7 @@ export class ActionModalComponent {
   }
 
   handleNo(): void {
-    this.onConfirm.emit(false);
+    this.onClose.emit();
     this.isOpen = false;
   }
 }
