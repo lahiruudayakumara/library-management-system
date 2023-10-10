@@ -59,7 +59,5 @@ export class BookListViewComponent {
   }
 
   addBook(book: any) {
-    console.log('Book added:', book);
-    // You can handle API calls or state updates here
   }
 }

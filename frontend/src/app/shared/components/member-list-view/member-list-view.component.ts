@@ -1,16 +1,23 @@
-import { FilePenLine, LucideAngularModule, Trash2 } from 'lucide-angular';
+import * as MemberActions from '../../../store/actions/member.actions';
 
-import { ActionModalComponent } from "../modal/action-modal/action-modal.component";
+import { FilePenLine, LucideAngularModule, Trash2 } from 'lucide-angular';
+import { selectMemberError, selectMemberLoading, selectMembers } from '../../../store/selectors/member.selector';
+
 import { AddMemberModalComponent } from "../modal/add-member-modal/add-member-modal.component";
+import { AlertModalComponent } from "../modal/alert-modal/alert-modal.component";
 import { ApiService } from '../../../core/services/api.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { DateFormatPipe } from "../../pipes/date-format.pipe";
 import { IMember } from '../../../interfaces/member';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-member-list-view',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, AddMemberModalComponent, ActionModalComponent],
+  imports: [CommonModule, LucideAngularModule, AddMemberModalComponent, AlertModalComponent, DateFormatPipe],
   templateUrl: './member-list-view.component.html',
   styleUrl: './member-list-view.component.scss'
 })
@@ -19,9 +26,26 @@ export class MemberListViewComponent {
   readonly FilePenLine = FilePenLine;
   readonly Trash2 = Trash2;
   errorMessage: string = '';
+  sucessMessage: string = '';
   isAddMemberModal: boolean = false;
+  isSucessModal: boolean = false;
+  isErrModal: boolean = false;
+  userRole: string = '';
+  members$: Observable<IMember[]> | undefined;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private store: Store) {
+    this.members$ = this.store.select(selectMembers);
+    this.store.select(selectMemberLoading).subscribe((loading) => {
+      if (!loading) {
+        this.store.select(selectMemberError).subscribe((error) => {
+          if (error) {
+            this.isErrModal = true;
+            this.errorMessage = error;
+          }
+        });
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loadMembers();
@@ -31,32 +55,28 @@ export class MemberListViewComponent {
     this.isAddMemberModal = true;
   }
 
-  editMember(user: any) {
-    alert(`Edit User: ${user.name}`);
-  }
-
-  deleteMember(userId: string) {
-    // this.users = this.users.filter(user => user.id !== userId);
-    alert(`User with ID ${userId} deleted.`);
-  }
-
   loadMembers(): void {
-    this.apiService.getMembers().subscribe({
-      next: (data) => {
-        if (data.success) {
-          this.members = data.data;
-        } else {
-          this.errorMessage = 'No members found or invalid data format.';
-        }
-      },
-      error: (err) => {
-        console.error('Error fetching members:', err);
-        this.errorMessage = 'Error fetching members.';
-      },
-    });
+    this.store.dispatch(MemberActions.loadMembers({ page: 1, limit: 7 }));
   }
 
   registerMember() {
-    // this.isAddMemberModal = false;
+    this.isAddMemberModal = false;
+    this.isSucessModal = true;
+    this.sucessMessage = 'Member added successfully.';
+    this.loadMembers();
+  }
+
+  handleAlertResponse() {
+    this.isErrModal = false;
+    this.isSucessModal = false;
+  }
+
+  handleError(message: string) {
+    this.isErrModal = true;
+    this.errorMessage = message;
+  }
+
+  closeAddMemberModal() {
+    this.isAddMemberModal = false;
   }
 }

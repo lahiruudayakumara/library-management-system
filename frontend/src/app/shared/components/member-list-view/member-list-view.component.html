@@ -4,43 +4,59 @@
     <button class="add-member-btn" (click)="addMember()">Add New member</button>
   </div>
 
-  <table *ngIf="members.length > 0">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>email</th>
-        <th class="text-center">Membership Type</th>
-        <th class="text-center">Membership Expiry</th>
-        <th class="text-center">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let member of members">
-        <td>{{ member.name}}</td>
-        <td>{{ member.email }}</td>
-        <td class="text-center">{{ member.membershipType }}</td>
-        <td class="text-center">{{ member.membershipExpiry }}</td>
-        <td class="text-center">
-          <button (click)="editMember(member)">
-            <lucide-angular [img]="FilePenLine" size="20" class="my-icon"></lucide-angular>
-          </button>
-          <button (click)="deleteMember(member._id)">
-            <lucide-angular [img]="Trash2" size="20" class="my-icon"></lucide-angular>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div *ngIf="members.length === 0" class="no-data">
+  <div class="main-area">
+    <div class="table-container">
+      <div class="table-wrapper">
+        <table *ngIf="(members$ | async)?.length ?? 0 > 0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>email</th>
+              <th class="text-center">Membership Type</th>
+              <th class="text-center">Membership Expiry</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let member of members$ | async">
+              <td>{{ member.name }}</td>
+              <td>{{ member.email }}</td>
+              <td class="text-center">{{ member.membershipType }}</td>
+              <td class="text-center">
+                {{ member.membershipExpiry | dateFormat }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="(members$ | async)?.length ?? 0 > 0" class="Show-more">
+    <a [href]="'/' + userRole + '/members'">Show More</a>
+  </div>
+  <div *ngIf="(members$ | async)?.length === 0" class="no-data">
     <p>No Staff members Found</p>
   </div>
 </div>
-<app-add-member-modal [isOpen]="isAddMemberModal" (onConfirm)="registerMember()">
+<app-add-member-modal
+  [isOpen]="isAddMemberModal"
+  (addMember)="registerMember()"
+  (errorOccurred)="handleError($event)"
+  (onClose)="closeAddMemberModal()"
+>
 </app-add-member-modal>
-<!-- <app-action-modal
-[isOpen]="isModalOpen"
-title="Logout Confirmation"
-message="Are you sure you want to log out?"
-(onConfirm)="handleLogoutResponse($event)"
-> -->
-
+<app-alert-modal
+  [isOpen]="isSucessModal"
+  [type]="'success'"
+  [title]="' Sucessfull'"
+  [message]="sucessMessage"
+  (onConfirm)="handleAlertResponse()"
+>
+</app-alert-modal>
+<app-alert-modal
+  [isOpen]="isErrModal"
+  [type]="'error'"
+  [title]="' Error'"
+  [message]="errorMessage"
+  (onConfirm)="handleAlertResponse()"
+>
+</app-alert-modal>
