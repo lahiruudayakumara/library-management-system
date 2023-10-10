@@ -3,35 +3,40 @@
     <h2>User List</h2>
     <button class="add-user-btn" (click)="addUser()">Add New User</button>
   </div>
-
-  <table *ngIf="users.length > 0">
-    <thead>
-      <tr>
-        <th>User Name</th>
-        <th>Name</th>
-        <th class="text-center">User Role</th>
-        <th class="text-center">Current Status</th>
-        <th class="text-center">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{ user.username}}</td>
-        <td>{{ user.name }}</td>
-        <td class="text-center">{{ user.role }}</td>
-        <td class="text-center">{{ user.isActive }}</td>
-        <td class="text-center">
-          <button (click)="editUser(user)">
-            <lucide-angular [img]="FilePenLine" size="20" class="my-icon"></lucide-angular>
-          </button>
-          <button (click)="deleteUser(user._id)">
-            <lucide-angular [img]="Trash2" size="20" class="my-icon"></lucide-angular>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div *ngIf="users.length === 0" class="no-data">
+  <div class="main-area">
+    <div class="table-container">
+      <div class="table-wrapper">
+        <table *ngIf="(users$ | async)?.length ?? 0 > 0">
+          <thead>
+            <tr>
+              <th>User Name</th>
+              <th>Name</th>
+              <th class="text-center">User Role</th>
+              <th class="text-center">Current Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users$ | async">
+              <td>{{ user.username }}</td>
+              <td>{{ user.name }}</td>
+              <td class="text-center">{{ user.role }}</td>
+              <td class="text-center">{{ user.isActive }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="(users$ | async)?.length ?? 0 > 0" class="Show-more">
+    <a [href]="'/' + userRole + '/users'">Show More</a>
+  </div>
+  <div *ngIf="(users$ | async)?.length === 0" class="no-data">
     <p>No Staff Users Found</p>
   </div>
 </div>
+<app-add-user-modal
+  [isOpen]="isAddUserModal"
+  (addMember)="registerUser()"
+  (errorOccurred)="handleError($event)"
+  (onClose)="closeUserModal()"
+></app-add-user-modal>
