@@ -5,23 +5,74 @@
       <h3>Register User</h3>
     </div>
     <hr />
-    <form (ngSubmit)="handleRegister()">
+    <form #registerForm="ngForm" (ngSubmit)="handleRegister(registerForm)">
       <div class="form-container">
         <div class="form-group">
           <label for="name">Name</label>
-          <input id="name" [(ngModel)]="newMember.name" name="name" placeholder="Enter full name" required />
+          <input
+            id="name"
+            [(ngModel)]="newMember.name"
+            name="name"
+            placeholder="Enter full name"
+            required
+          />
         </div>
         <div class="form-group">
-          <label for="username">Email</label>
-          <input id="username" [(ngModel)]="newMember.email" name="username" placeholder="Enter username" required />
+          <label for="username">Username</label>
+          <input
+            id="username"
+            [(ngModel)]="newMember.username"
+            name="username"
+            placeholder="Enter username"
+            required
+            autocomplete="off"
+          />
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input id="email" [(ngModel)]="newMember.email" name="email" placeholder="Enter email" required type="email" />
+          <input
+            id="email"
+            [(ngModel)]="newMember.email"
+            name="email"
+            placeholder="Enter email"
+            required
+            type="email"
+          />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input id="password" [(ngModel)]="newMember.membershipType" name="password" placeholder="Enter password" required type="password" />
+          <input
+            id="password"
+            [(ngModel)]="newMember.password"
+            name="password"
+            placeholder="Enter password"
+            required
+            type="password"
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select
+            id="role"
+            [(ngModel)]="newMember.role"
+            name="role"
+            #membershipType="ngModel"
+            [class.invalid]="membershipType.invalid && membershipType.touched"
+            required
+            autocomplete="off"
+          >
+            <option value="Admin">Admin</option>
+            <option value="Librarian">Librarian</option>
+            <option value="Assistant">Assistant</option>
+            <option value="Staff">Staff</option>
+          </select>
+          <div
+            *ngIf="membershipType.invalid && membershipType.touched"
+            class="error"
+          >
+            Role isrequired.
+          </div>
         </div>
       </div>
       <hr />
