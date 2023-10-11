@@ -1,12 +1,41 @@
 <div class="modal-overlay" *ngIf="isOpen">
   <div class="modal">
-    <lucide-angular [img]="Info" size="60" class="my-icon"></lucide-angular>
+    <ng-container *ngIf="type === 'info'">
+      <lucide-angular
+        [img]="ShieldQuestion"
+        size="40"
+        class="info"
+      ></lucide-angular>
+    </ng-container>
+    <ng-container *ngIf="type === 'success'">
+      <lucide-angular [img]="Success" size="40" class="sucess"></lucide-angular>
+    </ng-container>
+    <ng-container *ngIf="type === 'error'">
+      <lucide-angular [img]="Error" size="40" class="error"></lucide-angular>
+    </ng-container>
+    <ng-container *ngIf="type === 'warning'">
+      <lucide-angular
+        [img]="Warning"
+        size="40"
+        class="warning"
+      ></lucide-angular>
+    </ng-container>
     <h3>{{ title }}</h3>
     <p>{{ message }}</p>
-
+    <ng-content></ng-content>
     <div class="modal-actions">
-      <button (click)="handleYes()" class="yes-btn">Yes</button>
-      <button (click)="handleNo()" class="no-btn">No</button>
+      <button
+        [ngClass]="{
+          'info-btn': type === 'info',
+          'success-btn': type === 'success',
+          'error-btn': type === 'error',
+          'warning-btn': type === 'warning'
+        }"
+        (click)="onConfirm.emit()"
+      >
+        {{ confirmText }}
+      </button>
+      <button (click)="onClose.emit()" class="no-btn">{{ cancelText }}</button>
     </div>
   </div>
 </div>

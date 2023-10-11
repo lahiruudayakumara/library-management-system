@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Info, LucideAngularModule } from 'lucide-angular';
+import { LucideAngularModule, ShieldAlert, ShieldCheck, ShieldQuestion, ShieldX } from 'lucide-angular';
 
 import { CommonModule } from '@angular/common';
 
@@ -11,21 +11,18 @@ import { CommonModule } from '@angular/common';
   styleUrl: './form-modal.component.scss'
 })
 export class FormModalComponent {
-  @Input() isOpen: boolean = false; // Controls modal visibility
+  @Input() isOpen: boolean = false;
   @Input() title: string = 'Confirm';
   @Input() message: string = 'Are you sure you want to proceed?';
+  @Input() type: 'info' | 'success' | 'error' | 'warning' = 'info';
+  @Input() confirmText: string = 'Yes';
+  @Input() cancelText: string = 'No';
 
   @Output() onConfirm = new EventEmitter<boolean>();
+  @Output() onClose = new EventEmitter<void>();
 
-  readonly Info = Info;
-
-  handleYes(): void {
-    this.onConfirm.emit(true);
-    this.isOpen = false;
-  }
-
-  handleNo(): void {
-    this.onConfirm.emit(false);
-    this.isOpen = false;
-  }
+  readonly ShieldQuestion = ShieldQuestion;
+  readonly Success = ShieldCheck;
+  readonly Error = ShieldX;
+  readonly Warning = ShieldAlert;
 }
