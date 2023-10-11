@@ -1,10 +1,13 @@
+import * as BooksActions from '../../../../store/actions/books.actions';
+
 import { BookText, LucideAngularModule } from 'lucide-angular';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { selectError, selectLoading } from '../../../../store/selectors/books.selector';
 
-import { ApiService } from '../../../../core/services/api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IBook } from '../../../../interfaces/book';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-edit-book-modal',
@@ -21,28 +24,28 @@ export class EditBookModalComponent {
 
   readonly BookText = BookText;
 
-  constructor(private apiService: ApiService) { }
-
-  handleEdit() {
-    this.apiService.updateBook(this.editedBook).subscribe({
-      next: (data) => {
-        if (data.success) {
-          // this.onSave.emit(data.data);
-          console.log(data.data);
-        } else {
-          console.error('Error updating book:', data.error);
-        }
-      },
-      error: (err) => {
-        console.error('Error updating book:', err);
+  constructor(private store: Store) {
+    this.store.select(selectLoading).subscribe((loading) => {
+      if (!loading) {
+        this.store.select(selectError).subscribe((error) => {
+          if (error) {
+            this.isOpen = false;
+          } else {
+            this.isOpen = false;
+          }
+        });
       }
     });
+
+  }
+
+  handleEdit() {
+    this.store.dispatch(BooksActions.updateBook({ book: this.editedBook }));
     this.onSave.emit();
   }
 
   handleCancel() {
-    this.onCancel.emit(); // Emit cancel event
-    console.log(this.editedBook);
+    this.onCancel.emit();
   }
 
   getFormattedPublishedDate(): string {
