@@ -1,26 +1,33 @@
+import * as MemberActions from '../../../../store/actions/member.actions';
+
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { LucideAngularModule, Users } from 'lucide-angular';
+import { selectMemberError, selectMemberLoading } from '../../../../store/selectors/member.selector';
 
 import { AlertModalComponent } from '../alert-modal/alert-modal.component';
 import { ApiService } from '../../../../core/services/api.service';
-import { BarcodeComponent } from '../../barcode/barcode.component';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-add-member-modal',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, FormsModule, AlertModalComponent],
+  imports: [CommonModule, LucideAngularModule, FormsModule],
   templateUrl: './add-member-modal.component.html',
   styleUrl: './add-member-modal.component.scss'
 })
+
 export class AddMemberModalComponent {
-  isAlertOpen: boolean = false;
+  isErrorMessage: boolean = false;
+  errorMessage: string = '';
+
   @Input() isOpen: boolean = false;
 
-  @Output() onConfirm = new EventEmitter<boolean>();
-  @Output() closeModal = new EventEmitter<void>();
+  @Output() onClose = new EventEmitter<boolean>();
+  @Output() errorOccurred = new EventEmitter<string>();
   @Output() addMember = new EventEmitter<any>();
+
 
   newMember = {
     name: '',
@@ -30,40 +37,47 @@ export class AddMemberModalComponent {
 
   readonly Users = Users;
 
-  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef) {}
-
-  handleRegister() {
-    this.apiService.registerMember(this.newMember).subscribe({
-      next: (data) => {
-        if (data.success) {
-          this.isAlertOpen = true;
-          this.addMember.emit(data.data);
-          this.cdr.detectChanges();
-        } else {
-          console.error('Error adding member:', data.error);
-        }
-      },
-      error: (err) => {
-        console.error('Error adding member:', err);
-        this.isAlertOpen = true;
+  constructor(private store: Store, private cdr: ChangeDetectorRef) {
+    this.store.select(selectMemberLoading).subscribe((loading) => {
+      if (!loading) {
+        this.store.select(selectMemberError).subscribe((error) => {
+          if (error) {
+            this.errorOccurred.emit(error);
+            this.isOpen = false;
+            this.resetForm();
+          } else {
+            this.isOpen = false;
+            this.resetForm();
+          }
+        });
       }
     });
-    this.onConfirm.emit(true);
-    this.isOpen = false;
+  }
+
+  handleRegister(form: NgForm) {
+    if (form.valid) {
+      this.store.dispatch(MemberActions.registerMember({ data: this.newMember }));
+
+      this.isOpen = false;
+      this.resetForm();
+    } else {
+      form.controls['name'].markAsTouched();
+      form.controls['email'].markAsTouched();
+      form.controls['membershipType'].markAsTouched();
+    }
   }
 
   handleCancel() {
-    this.onConfirm.emit(false);
+    this.onClose.emit(false);
     this.isOpen = false;
     this.resetForm();
-    this.isAlertOpen = true;
   }
 
   resetForm() {
     this.newMember = {
       name: '',
       email: '',
-      membershipType: '',
+      membershipType: 'Basic',
     };
   }
 }

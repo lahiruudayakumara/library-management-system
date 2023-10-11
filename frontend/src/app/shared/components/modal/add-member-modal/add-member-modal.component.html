@@ -2,10 +2,10 @@
   <div class="modal">
     <div class="header">
       <lucide-angular [img]="Users" size="24" class="my-icon"></lucide-angular>
-      <h3>Register User</h3>
+      <h3>Register Member</h3>
     </div>
     <hr />
-    <form (ngSubmit)="handleRegister()">
+    <form #form="ngForm" (ngSubmit)="handleRegister(form)">
       <div class="form-container">
         <div class="form-group">
           <label for="name">Name</label>
@@ -14,27 +14,45 @@
             [(ngModel)]="newMember.name"
             name="name"
             placeholder="Enter full name"
+            #name="ngModel"
+            [class.invalid]="name.invalid && name.touched"
             required
             autocomplete="off"
           />
+          <div *ngIf="name.invalid && name.touched" class="error">
+            Name is required.
+          </div>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
           <input
             id="email"
             [(ngModel)]="newMember.email"
+            type="email"
             name="email"
             placeholder="Enter email"
             required
+            email
             autocomplete="off"
           />
+          <div
+            *ngIf="
+              form.controls['email']?.invalid &&
+              form.controls['email']?.touched
+            "
+            class="error"
+          >
+            Please enter a valid email address.
+          </div>
         </div>
         <div class="form-group">
-          <label for="membershipType">Password</label>
+          <label for="membershipType">Member Type</label>
           <select
             id="membershipType"
             [(ngModel)]="newMember.membershipType"
             name="membershipType"
+            #membershipType="ngModel"
+            [class.invalid]="membershipType.invalid && membershipType.touched"
             required
             autocomplete="off"
           >
@@ -42,6 +60,12 @@
             <option value="Bronze">Bronze</option>
             <option value="Premium">Premium</option>
           </select>
+          <div
+            *ngIf="membershipType.invalid && membershipType.touched"
+            class="error"
+          >
+            Membership type is required.
+          </div>
         </div>
       </div>
       <hr />
@@ -51,10 +75,4 @@
       </div>
     </form>
   </div>
-  <app-alert-modal
-    [isOpen]="isAlertOpen"
-    type="success"
-    title="Member Registered"
-    message="Member has been registered successfully"
-  ></app-alert-modal>
 </div>
