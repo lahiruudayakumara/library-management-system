@@ -1,24 +1,28 @@
-import { BookText, Info, LucideAngularModule } from 'lucide-angular';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import * as BooksActions from '../../../../store/actions/books.actions';
 
-import { AlertModalComponent } from "../alert-modal/alert-modal.component";
+import { BookText, LucideAngularModule } from 'lucide-angular';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  selectError,
+  selectLoading,
+} from '../../../../store/selectors/books.selector';
+
 import { ApiService } from '../../../../core/services/api.service';
-import { BarcodeComponent } from "../../barcode/barcode.component";
-import { BarcodeScannerComponent } from "../../barcode-scanner/barcode-scanner.component";
+import { BarcodeComponent } from '../../barcode/barcode.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import JsBarcode from 'jsbarcode';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-add-book-modal',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, FormsModule, BarcodeComponent, AlertModalComponent],
+  imports: [CommonModule, LucideAngularModule, FormsModule, BarcodeComponent],
   templateUrl: './add-book-modal.component.html',
-  styleUrl: './add-book-modal.component.scss'
+  styleUrl: './add-book-modal.component.scss',
 })
 export class AddBookModalComponent {
-  isAlertOpen: boolean = true;
-  @Input() isOpen: boolean = false; // Controls modal visibility
+  @Input() isOpen: boolean = false;
   @Input() title: string = 'Confirm';
   @Input() message: string = 'Are you sure you want to proceed?';
 
@@ -26,8 +30,8 @@ export class AddBookModalComponent {
 
   @Output() closeModal = new EventEmitter<void>();
   @Output() addBook = new EventEmitter<any>();
+  @Output() errorOccurred = new EventEmitter<string>();
 
-  // Initialize a book object
   newBook = {
     title: '',
     author: '',
@@ -37,36 +41,40 @@ export class AddBookModalComponent {
     publishedDate: '',
     totalCopies: 1,
     availableCopies: 1,
-    addedBy: '607e1f8b8bcb8e3f74158a32', // Example user ID
+    addedBy: '607e1f8b8bcb8e3f74158a32',
     updatedBy: '607e1f8b8bcb8e3f74158a32',
-    isActive: true
+    isActive: true,
   };
 
   readonly BookText = BookText;
 
-  constructor(private apiService: ApiService) { }
-
-  handleYes(): void {
-    this.generateBarcode(this.newBook.isbn);
-    this.apiService.addBook(this.newBook).subscribe({
-      next: (data) => {
-        if (data.success) {
-          this.addBook.emit(data.data);
-        } else {
-          console.error('Error adding book:', data.error);
-        }
-      },
-      error: (err) => {
-        console.error('Error adding book:', err);
+  constructor(private store: Store) {
+    this.store.select(selectLoading).subscribe((loading) => {
+      if (!loading) {
+        this.store.select(selectError).subscribe((error) => {
+          if (error) {
+            this.errorOccurred.emit(error);
+            this.isOpen = false;
+            this.resetForm();
+          } else {
+            this.addBook.emit({ isbn: this.newBook.isbn });
+            this.onConfirm.emit(true);
+            this.isOpen = false;
+            this.resetForm();
+          }
+        });
       }
     });
-    this.onConfirm.emit(true);
-    this.isOpen = false;
-    this.resetForm();
+  }
+
+  handleYes(): void {
+    if (this.newBook.title && this.newBook.author && this.newBook.isbn) {
+      this.store.dispatch(BooksActions.addBook({ Book: this.newBook }));
+    }
   }
 
   handleNo(): void {
-    this.onConfirm.emit(false);
+    this.closeModal.emit();
     this.isOpen = false;
     this.resetForm();
   }
@@ -83,35 +91,7 @@ export class AddBookModalComponent {
       availableCopies: 1,
       addedBy: '607e1f8b8bcb8e3f74158a32',
       updatedBy: '607e1f8b8bcb8e3f74158a32',
-      isActive: true
+      isActive: true,
     };
-  }
-
-  generateBarcode(data: string) {
-    if (data) {
-      JsBarcode('#barcode', data, {
-        format: 'CODE128',
-        width: 2,
-        height: 50,
-        displayValue: true
-      });
-      // Automatically print the barcode
-      this.printBarcode();
-    }
-  }
-
-  printBarcode() {
-    const barcodeElement = document.querySelector('#barcode') as HTMLElement;
-    const newWindow = window.open('', '_blank');
-    if (newWindow && barcodeElement) {
-      newWindow.document.write(`
-        <html>
-          <head><title>Print Barcode</title></head>
-          <body>${barcodeElement.outerHTML}</body>
-        </html>
-      `);
-      newWindow.document.close();
-      newWindow.print();
-    }
   }
 }
