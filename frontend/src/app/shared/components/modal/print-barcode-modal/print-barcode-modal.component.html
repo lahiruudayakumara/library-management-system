@@ -1,0 +1,15 @@
+<app-form-modal
+  [isOpen]="isOpen"
+  [type]="'success'"
+  title="Sucessfully Added"
+  message="Are you sure you want to print the barcode?"
+  [confirmText]="'Print'"
+  [cancelText]="'Close'"
+  (onConfirm)="onPrint.emit()"
+  (onClose)="onClose.emit()"
+>
+  <app-barcode
+    [value]="barcode"
+    [options]="{ height: 50, displayValue: true }"
+  ></app-barcode>
+</app-form-modal>
