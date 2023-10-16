@@ -1,0 +1,106 @@
+<div class="modal-overlay" *ngIf="isOpen">
+  <div class="modal">
+    <div class="header">
+      <lucide-angular [img]="Users" size="24" class="my-icon"></lucide-angular>
+      <h3>Update User Details</h3>
+    </div>
+    <hr />
+    <form (ngSubmit)="handleEdit()">
+      <div class="form-container">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            id="name"
+            [(ngModel)]="editedUser.name"
+            name="name"
+            placeholder="Enter full name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            id="username"
+            [(ngModel)]="editedUser.username"
+            name="username"
+            placeholder="Enter username"
+            required
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            [(ngModel)]="editedUser.email"
+            name="email"
+            placeholder="Enter email"
+            required
+            type="email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            [(ngModel)]="editedUser.password"
+            name="password"
+            placeholder="Enter password"
+            required
+            type="password"
+            autocomplete="off"
+          />
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select
+            id="role"
+            [(ngModel)]="editedUser.role"
+            name="role"
+            #membershipType="ngModel"
+            [class.invalid]="membershipType.invalid && membershipType.touched"
+            required
+            autocomplete="off"
+          >
+            <option value="Admin">Admin</option>
+            <option value="Librarian">Librarian</option>
+            <option value="Assistant">Assistant</option>
+            <option value="Staff">Staff</option>
+          </select>
+          <div
+            *ngIf="membershipType.invalid && membershipType.touched"
+            class="error"
+          >
+            Role isrequired.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="isActive">Role</label>
+          <select
+            id="isActive"
+            [(ngModel)]="editedUser.isActive"
+            name="isActive"
+            #membershipType="ngModel"
+            [class.invalid]="membershipType.invalid && membershipType.touched"
+            required
+            autocomplete="off"
+          >
+            <option value="true">Active</option>
+            <option value="false">Deactivate</option>
+          </select>
+          <div
+            *ngIf="membershipType.invalid && membershipType.touched"
+            class="error"
+          >
+            Role isrequired.
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="modal-actions">
+        <button type="submit" class="yes-btn">Update</button>
+        <button (click)="handleCancel()" class="no-btn">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
