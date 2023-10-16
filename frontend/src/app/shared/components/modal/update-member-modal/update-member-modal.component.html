@@ -1,0 +1,78 @@
+<div class="modal-overlay" *ngIf="isOpen">
+  <div class="modal">
+    <div class="header">
+      <lucide-angular [img]="Users" size="24" class="my-icon"></lucide-angular>
+      <h3>Update Member Details</h3>
+    </div>
+    <hr />
+    <form #form="ngForm" (ngSubmit)="handleEdit()">
+      <div class="form-container">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            id="name"
+            [(ngModel)]="editedMember.name"
+            name="name"
+            placeholder="Enter full name"
+            #name="ngModel"
+            [class.invalid]="name.invalid && name.touched"
+            required
+            autocomplete="off"
+          />
+          <div *ngIf="name.invalid && name.touched" class="error">
+            Name is required.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            [(ngModel)]="editedMember.email"
+            type="email"
+            name="email"
+            placeholder="Enter email"
+            required
+            email
+            autocomplete="off"
+          />
+          <div
+            *ngIf="
+              form.controls['email']?.invalid &&
+              form.controls['email']?.touched
+            "
+            class="error"
+          >
+            Please enter a valid email address.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="membershipType">Member Type</label>
+          <select
+            id="membershipType"
+            [(ngModel)]="editedMember.membershipType"
+            name="membershipType"
+            #membershipType="ngModel"
+            [class.invalid]="membershipType.invalid && membershipType.touched"
+            required
+            autocomplete="off"
+          >
+            <option value="Basic">Basic</option>
+            <option value="Bronze">Bronze</option>
+            <option value="Premium">Premium</option>
+          </select>
+          <div
+            *ngIf="membershipType.invalid && membershipType.touched"
+            class="error"
+          >
+            Membership type is required.
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="modal-actions">
+        <button type="submit" class="yes-btn">Update</button>
+        <button (click)="handleCancel()" class="no-btn">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
