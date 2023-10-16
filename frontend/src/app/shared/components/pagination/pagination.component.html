@@ -1,0 +1,26 @@
+<div class="pagination">
+  <div class="pagination-controls">
+    <button (click)="prevPage.emit()" [disabled]="currentPage === 1">
+      Previous
+    </button>
+    <span>Items per page: </span>
+    <select
+      [(ngModel)]="pageSize"
+      (change)="onLimitChange.emit(pageSize)"
+      name="limit"
+      id="limit"
+    >
+      <option *ngFor="let limit of [5, 10, 25, 50, 100]" [value]="limit">
+        {{ limit }}
+      </option>
+    </select>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <span>Total: {{ totalItems }}</span>
+    <button (click)="nextPage.emit()" [disabled]="currentPage === totalPages">
+      Next
+    </button>
+  </div>
+  <div class="pagination-controls">
+    <p>Page {{ currentPage }} of {{ totalPages }}</p>
+  </div>
+</div>
