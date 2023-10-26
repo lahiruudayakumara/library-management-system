@@ -1,11 +1,12 @@
 <nav class="navbar">
   <div class="navbar-brand">
     <button (click)="changeSideBar()">
-      <lucide-angular [img]="AlignJustify" class="my-icon"></lucide-angular>
+      <lucide-angular [img]="AlignJustify" class="my-icon-large"></lucide-angular>
+      <lucide-angular [img]="isActive === true ? X : AlignJustify" class="my-icon-mobile"></lucide-angular>
     </button>
     <div class="logo">
       <img
-        src="https://static.vecteezy.com/system/resources/thumbnails/004/853/320/small/book-read-library-study-line-icon-illustration-logo-template-suitable-for-many-purposes-free-vector.jpg"
+        src="/assets/images/logo.png"
         height="40px"
         alt="logo"
       />
@@ -13,7 +14,7 @@
     </div>
   </div>
   <div class="navbar-menu">
-    <button (click)="toggleNotifications()">
+    <!-- <button (click)="toggleNotifications()">
       <span *ngIf="notifications.length > 0">{{ notifications.length }}</span>
       <lucide-angular [img]="Bell" class="my-icon"></lucide-angular>
     </button>
@@ -26,7 +27,7 @@
         <li *ngFor="let notification of notifications">{{ notification }}</li>
         <li *ngIf="notifications.length === 0">No new notifications</li>
       </ul>
-    </div>
+    </div> -->
     <a class="nav-link" (click)="logout()">
       <lucide-angular [img]="LogOut" class="my-icon"></lucide-angular>
     </a>

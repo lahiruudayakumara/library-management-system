@@ -1,6 +1,7 @@
 import { FilePenLine, LucideAngularModule, Trash2 } from 'lucide-angular';
 
 import { ApiService } from '../../../core/services/api.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { IUser } from '../../../interfaces/user';
@@ -17,10 +18,13 @@ export class StaffListViewComponent {
   readonly FilePenLine = FilePenLine;
   readonly Trash2 = Trash2;
   errorMessage: string = "";
-  constructor(private apiService:ApiService) {}
+  userRole: string = '';
+
+  constructor(private apiService:ApiService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadUsers();
+    this.userRole = this.authService.getRole()
   }
 
   addUser() {
@@ -46,7 +50,6 @@ export class StaffListViewComponent {
         }
       },
       error: (err) => {
-        console.error('Error fetching books:', err);
         this.errorMessage = 'Error fetching books.';
       }
     });

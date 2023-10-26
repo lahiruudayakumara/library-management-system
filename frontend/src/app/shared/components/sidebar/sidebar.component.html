@@ -1,79 +1,29 @@
 <div class="sidebar" [class.active]="isActive">
-  <ul class="sidebar-menu">
-    <li [class.active]="isActive">
-      <a routerLink="/admin" routerLinkActive="active">
-        <lucide-angular [img]="LayoutDashboard" class="my-icon"></lucide-angular>
-        <span>Overview</span>
-      </a>
-    </li>
-    <li [class.active]="isActive">
-      <a routerLink="/admin/books" routerLinkActive="active">
-        <lucide-angular [img]="BookText" class="my-icon"></lucide-angular>
-        <span>Books</span>
-      </a>
-    </li>
-    <!-- <li [class.active]="isActive">
-      <a routerLink="/admin/books" routerLinkActive="active">
-        <lucide-angular [img]="BookMarked" class="my-icon"></lucide-angular>
-        <span>Books</span>
-      </a>
-    </li> -->
-    <li [class.active]="isActive">
-      <a routerLink="/admin/members" routerLinkActive="active">
-        <lucide-angular [img]="Users" class="my-icon"></lucide-angular>
-        <span>Members</span>
-      </a>
-    </li>
-    <li [class.active]="isActive">
-      <a routerLink="/admin/users" routerLinkActive="active">
-        <lucide-angular [img]="UserRoundPen" class="my-icon"></lucide-angular>
-        <span>Users</span>
-      </a>
-    </li>
-    <!-- <li [class.active]="isActive">
-      <a routerLink="/admin/chat" routerLinkActive="active">
-        <lucide-angular [img]="MessageCircle" class="my-icon"></lucide-angular>
-        <span>Chat</span>
-      </a>
-    </li> -->
-    <li [class.active]="isActive">
-      <a routerLink="/admin/Settings" routerLinkActive="active">
-        <lucide-angular [img]="Cog" class="my-icon"></lucide-angular>
-        <span>Settings</span>
+  <ul *ngFor="let nav of navList" class="sidebar-menu">
+    <li
+      *ngIf="
+        (userRole !== 'admin' &&
+          nav.name !== 'Settings' &&
+          nav.name !== 'Users') ||
+        (userRole === 'admin' &&
+          nav.name === 'Settings') ||
+        (userRole === 'admin' ||
+          nav.name === 'Users' && nav.name === 'Users')
+      "
+      [class.active]="nav.active"
+      (click)="onChangeRoute(nav.route)"
+    >
+      <!-- Dynamic Router Link based on userRole and nav.route -->
+      <a
+        [routerLink]="[nav.route]"
+        routerLinkActive="active"
+        (click)="nav.active = true"
+      >
+        <!-- Mark the item as active on click -->
+
+        <lucide-angular [img]="nav.icon" class="my-icon"></lucide-angular>
+        <span>{{ nav.name }}</span>
       </a>
     </li>
   </ul>
 </div>
-<!-- <div class="side-bar">
-  <div class="collapse side-collapse" id="navbarNav">
-    <div>
-      <img
-        src="https://static.vecteezy.com/system/resources/thumbnails/004/853/320/small/book-read-library-study-line-icon-illustration-logo-template-suitable-for-many-purposes-free-vector.jpg"
-        width="50" alt="logo" />
-      <a class="navbar-brand" href="#">Library System</a>
-    </div>
-    <ul class="sidebar-side me-auto">
-      <li class="nav-item" *ngIf="isStudent">
-        <a class="nav-link" routerLink="/student/home" routerLinkActive="active">Student Home</a>
-      </li>
-      <li class="nav-item" *ngIf="isLibrarian">
-        <a class="nav-link" routerLink="/librarian/home" routerLinkActive="active">Librarian Dashboard</a>
-      </li>
-      <li class="nav-item" *ngIf="isLibraryAssistant">
-        <a class="nav-link" routerLink="/assistant/home" routerLinkActive="active">Assistant Dashboard</a>
-      </li>
-      <li class="nav-item" *ngIf="isStaff">
-        <a class="nav-link" routerLink="/staff/home" routerLinkActive="active">Staff Dashboard</a>
-      </li>
-   </ul>
-    <ul class="navbar-nav"> -->
-<!-- <li class="nav-item">
-        <a class="nav-link" routerLink="/profile" routerLinkActive="active">Profile</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" (click)="logout()">Logout</a>
-      </li>
-    </ul>
-  </div>
-
-</div> --> -->

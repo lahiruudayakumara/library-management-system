@@ -11,6 +11,9 @@
 
   &.active {
     width: 90px;
+    span {
+      display: none;
+    }
   }
 
   .sidebar-menu {
@@ -25,8 +28,18 @@
       width: 100%;
 
       &.active {
-        span {
-          display: none;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 5px;
+
+        span,
+        a {
+          color: #fff;
+
+          &:hover {
+            background-color: transparent;
+            color: #fff;
+          }
         }
       }
 
@@ -41,8 +54,8 @@
         transition: background-color 0.3s, color 0.3s;
 
         &:hover {
-          background-color: #007bff;
-          color: #fff;
+          background-color: transparent;
+          color: #007bff;
         }
 
         &.active {
@@ -57,9 +70,33 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .sidebar {
+    display: none;
     position: static;
     width: 100%;
     margin-top: 1rem;
     box-shadow: none;
+
+    &.active {
+      display: block;
+      width: 100%;
+
+      span {
+        display: block;
+      }
+    }
+
+    .sidebar-menu {
+      li {
+        &.active {
+          background-color: transparent;
+          color: #007bff;
+
+          span,
+          a {
+            color: #007bff;
+          }
+        }
+      }
+    }
   }
 }

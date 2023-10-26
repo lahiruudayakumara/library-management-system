@@ -10,10 +10,18 @@
   justify-content: space-between;
   align-items: center;
 
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
+
   .navbar-brand {
     display: flex;
     gap: 2rem;
     align-items: center;
+
+    @media (max-width: 768px) {
+      gap: 1rem;
+    }
 
     button {
       padding: 1rem;
@@ -21,9 +29,27 @@
       color: white;
       border-radius: 0.5rem;
 
+      @media (max-width: 768px) {
+        padding: 0.5rem;
+      }
+
       &:hover {
         background-color: rgba(255, 255, 255, 0.237);
         cursor: pointer;
+      }
+
+      .my-icon-large {
+        display: block;
+        @media (max-width: 768px) {
+          display: none;
+        }
+      }
+
+      .my-icon-mobile {
+        display: none;
+        @media (max-width: 768px) {
+          display: block;
+        }
       }
     }
   }
@@ -32,6 +58,10 @@
     font-size: 1.5rem;
     color: #fff;
     text-decoration: none;
+
+    @media (max-width: 768px) {
+      font-size: 0.9rem;
+    }
   }
 
   .logo {
@@ -45,15 +75,23 @@
     gap: 1rem;
     align-items: center;
 
+    @media (max-width: 768px) {
+      gap: 0.5rem;
+    }
+
     button {
       padding: 1rem;
       background-color: transparent;
       color: white;
       border-radius: 0.5rem;
       position: relative;
-  background: none;
-  border: none;
-  cursor: pointer;
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      @media (max-width: 768px) {
+        padding: 0.5rem;
+      }
 
       &:hover {
         background-color: rgba(255, 255, 255, 0.237);
@@ -69,6 +107,11 @@
         border-radius: 50%;
         padding: 0.2rem 0.4rem;
         font-size: 0.8rem;
+
+        @media (max-width: 768px) {
+          right: 2px;
+          top: 1px;
+        }
       }
     }
 
@@ -105,6 +148,10 @@
     overflow-y: auto;
     z-index: 1000;
 
+    @media (max-width: 768px) {
+      top: 80px;
+    }
+
     .notification-header {
       display: flex;
       align-items: center;
@@ -118,11 +165,8 @@
         color: #000;
         border: none;
         cursor: pointer;
-
       }
     }
-
-
 
     ul {
       list-style: none;

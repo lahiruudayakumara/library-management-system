@@ -1,14 +1,14 @@
 .book-list {
+  margin-top: 30px;
   padding-bottom: 1rem;
   border-radius: 0.5rem;
-  min-height: 250px;
+  min-height: 140px;
   overflow: hidden;
 
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
 
     h2 {
       margin: 0;
