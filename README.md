@@ -1,4 +1,4 @@
-# Library Management System
+# Library Management System MEAN Stack
 
 ## Overview
 
